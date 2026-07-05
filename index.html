@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account & Contact Data Clean</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="page-shell">
+    <header class="hero-panel">
+      <div>
+        <span class="eyebrow">Data Clean & Compare</span>
+        <h1>Account and Contact Quality Check</h1>
+        <p>Upload file(s), run the cleanup, and download a polished management report with issue analytics.</p>
+      </div>
+    </header>
+
+    <section class="card workflow-card">
+      <div class="section-heading">
+        <div>
+          <p class="section-label">Choose a mode</p>
+          <h2>Upload your data</h2>
+        </div>
+      </div>
+
+      <form id="compareForm" class="compare-form">
+        <div class="radio-grid">
+          <label class="radio-card selected">
+            <input type="radio" name="fileMode" value="account" checked />
+            <span>
+              <strong>Account file</strong>
+              <small>Clean account data only</small>
+            </span>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="fileMode" value="contact" />
+            <span>
+              <strong>Contact file</strong>
+              <small>Clean contact data only</small>
+            </span>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="fileMode" value="combined" />
+            <span>
+              <strong>Combined file</strong>
+              <small>Clean both account and contact columns</small>
+            </span>
+          </label>
+        </div>
+
+        <div class="upload-grid">
+          <label class="file-field" id="accountUpload">
+            <span>Account file</span>
+            <input id="accountFile" type="file" accept=".xlsx,.xls,.csv" />
+          </label>
+
+          <label class="file-field hidden" id="contactUpload">
+            <span>Contact file</span>
+            <input id="contactFile" type="file" accept=".xlsx,.xls,.csv" />
+          </label>
+
+          <label class="file-field hidden" id="combinedUpload">
+            <span>Combined file</span>
+            <input id="combinedFile" type="file" accept=".xlsx,.xls,.csv" />
+          </label>
+        </div>
+
+        <div class="action-row">
+          <button type="submit" class="primary-button">Compare & Clean</button>
+          <span class="hint">The downloaded workbook includes a summary, issue breakdown, and cleaned data.</span>
+        </div>
+      </form>
+
+      <div class="status-panel">
+        <div class="status-message" id="compareStatus">Ready to run your cleanup.</div>
+      </div>
+    </section>
+
+    <section class="card analytics-card hidden" id="analyticsCard">
+      <div class="section-heading with-action">
+        <div>
+          <p class="section-label">Results</p>
+          <h2>Issue analytics</h2>
+          <p class="tap-hint">Tap any card or row for a detailed breakdown</p>
+        </div>
+        <button id="downloadReport" class="secondary-button">Download Report</button>
+      </div>
+      <div class="summary-grid" id="summaryGrid"></div>
+
+      <div class="issue-summary dedupe-summary hidden" id="dedupeSection">
+        <h3>Duplicate detection</h3>
+        <div class="summary-grid" id="dedupeGrid"></div>
+      </div>
+
+      <div class="issue-summary">
+        <h3>Top issues detected</h3>
+        <div class="issue-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Issue</th>
+                <th>Count</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="issueTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <footer class="branding-footer">
+      <p>Account & Contact Data Clean tool — browser-only cleanup for management-ready exports.</p>
+    </footer>
+  </main>
+
+  <!-- Process loading overlay -->
+  <div class="progress-overlay hidden" id="progressOverlay" role="dialog" aria-modal="true" aria-label="Processing">
+    <div class="progress-panel">
+      <div class="orbit-loader" aria-hidden="true">
+        <span class="orbit-core"></span>
+        <span class="orbit-ring ring-1"></span>
+        <span class="orbit-ring ring-2"></span>
+        <span class="orbit-ring ring-3"></span>
+      </div>
+      <p class="progress-eyebrow">Process loading</p>
+      <h3 class="progress-title" id="progressTitle">Reading your workbook…</h3>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <ol class="progress-steps" id="progressStepList">
+        <li data-step="0"><span class="step-dot"></span><span class="step-text">Upload file</span></li>
+        <li data-step="1"><span class="step-dot"></span><span class="step-text">Read workbook</span></li>
+        <li data-step="2"><span class="step-dot"></span><span class="step-text">Clean & validate</span></li>
+        <li data-step="3"><span class="step-dot"></span><span class="step-text">Check duplicates</span></li>
+        <li data-step="4"><span class="step-dot"></span><span class="step-text">Build report</span></li>
+      </ol>
+      <p class="progress-footnote" id="progressFootnote">Scanning rows and matching cleanup rules…</p>
+    </div>
+  </div>
+
+  <!-- Insight detail popup -->
+  <div class="detail-overlay hidden" id="detailOverlay" role="dialog" aria-modal="true" aria-label="Insight detail">
+    <div class="detail-panel">
+      <div class="detail-header">
+        <div>
+          <p class="section-label" id="detailEyebrow">Insight</p>
+          <h3 id="detailTitle">Detail</h3>
+        </div>
+        <button class="icon-button" id="detailClose" aria-label="Close">✕</button>
+      </div>
+      <div class="detail-body" id="detailBody"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/exceljs@4.3.0/dist/exceljs.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
